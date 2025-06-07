@@ -107,14 +107,15 @@
 </head>
 <body>
 
-    <h1>Zahlen App</h1>
+    <h1>Okey Rechner</h1>
 
     <div class="container">
         <input type="text" id="leftInput" placeholder="↕" readonly onclick="openCalculator('leftInput')">
         <input type="text" id="rightInput" placeholder="↔" readonly onclick="openCalculator('rightInput')">
     </div>
 
-    <div>
+    <!-- Mittige Buttons -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
         <button onclick="nextRound()">Bestätigen</button>
         <button onclick="undoRound()">Undo Letzte Runde</button>
     </div>
@@ -171,8 +172,8 @@
                 <button onclick="appendCalculator('-')">-</button>
 
                 <button onclick="appendCalculator('0')">0</button>
-                <button onclick="appendCalculator('.')">.</button>
-                <button onclick="clearCalculator()">C</button>
+                <button onclick="backspaceCalculator()">⌫</button>
+                <button onclick="clearCalculator()">AC</button>
                 <button onclick="appendCalculator('+')">+</button>
 
                 <button style="grid-column: span 4;" onclick="calculateResult()">=</button>
@@ -205,6 +206,11 @@
         function clearCalculator() {
             calculatorValue = '';
             document.getElementById('calculatorDisplay').innerText = '0';
+        }
+
+        function backspaceCalculator() {
+            calculatorValue = calculatorValue.slice(0, -1);
+            document.getElementById('calculatorDisplay').innerText = calculatorValue || '0';
         }
 
         function calculateResult() {
