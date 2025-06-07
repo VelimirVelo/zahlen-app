@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Zahlen App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        input {
+            font-size: 20px;
+            width: 100px;
+            padding: 10px;
+        }
+        .round {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 5px;
+        }
+        .scoreboard {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 500px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        .scoreboard table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .scoreboard th, .scoreboard td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .sum-row {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+        .totals {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Zahlen App</h1>
+
+    <div class="container">
+        <input type="text" id="leftInput" placeholder="↕">
+        <input type="text" id="rightInput" placeholder="↔">
+    </div>
+
+    <div>
+        <button onclick="nextRound()">Bestätigen</button>
+        <button onclick="undoRound()">Undo Letzte Runde</button>
+        <button onclick="resetGame()">Reset</button>
+    </div>
+
+    <div class="round" id="roundDisplay">Runde 1</div>
+
+    <div class="scoreboard">
+        <table id="scoreTable">
+            <thead>
+                <tr>
+                    <th>Runde</th>
+                    <th>↕ (Rundenpunkte)</th>
+                    <th>↔ (Rundenpunkte)</th>
+                </tr>
+            </thead>
+            <tbody id="scoreBody">
+                <!-- Dynamisch gefüllt -->
+            </tbody>
+            <tfoot>
+                <tr class="sum-row">
+                    <td>Gesamtsumme</td>
+                    <td id="sumLeft">0</td>
+                    <td id="sumRight">0</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Hier kommt jetzt die Differenz wieder unten dazu -->
+    <div class="totals" id="differenceDisplay">
+        Differenz ↕ - ↔: 0
+    </div>
+
+    <script>
+        let round = 1;
+        let totalLeft = 0;
+        let totalRight = 0;
+        let history = [];
+
+        function nextRound() {
+            const left = document.getElementById('leftInput').value;
+            const right = document.getElementById('rightInput').value;
+
+            const leftResult = eval(left || '0');
+            const rightResult = eval(right || '0');
+
+            history.push({ round: round, left: leftResult, right: rightResult });
+
+            totalLeft += leftResult;
+            totalRight += rightResult;
+
+            const scoreBody = document.getElementById('scoreBody');
+
+            // Zeile: Runde X Werte
+            const rowRound = document.createElement('tr');
+            rowRound.innerHTML = `
+                <td>Runde ${round}</td>
+                <td>${leftResult}</td>
+                <td>${rightResult}</td>
+            `;
+            scoreBody.appendChild(rowRound);
+
+            updateSums();
+
+            round++;
+            document.getElementById('roundDisplay').innerText = `Runde ${round}`;
+
+            document.getElementById('leftInput').value = '';
+            document.getElementById('rightInput').value = '';
+        }
+
+        function undoRound() {
+            if (history.length === 0) return;
+
+            const lastRound = history.pop();
+
+            totalLeft -= lastRound.left;
+            totalRight -= lastRound.right;
+
+            const scoreBody = document.getElementById('scoreBody');
+            // Letzte Zeile (die Runde) entfernen
+            scoreBody.removeChild(scoreBody.lastElementChild);
+
+            updateSums();
+
+            round--;
+            document.getElementById('roundDisplay').innerText = `Runde ${round}`;
+        }
+
+        function resetGame() {
+            round = 1;
+            totalLeft = 0;
+            totalRight = 0;
+            history = [];
+
+            document.getElementById('scoreBody').innerHTML = '';
+            document.getElementById('roundDisplay').innerText = `Runde 1`;
+
+            updateSums();
+        }
+
+        function updateSums() {
+            document.getElementById('sumLeft').innerText = totalLeft;
+            document.getElementById('sumRight').innerText = totalRight;
+
+            const difference = totalLeft - totalRight;
+            document.getElementById('differenceDisplay').innerText =
+                `Differenz ↕ - ↔: ${difference}`;
+        }
+    </script>
+
+</body>
+</html>
