@@ -99,7 +99,7 @@
         </table>
     </div>
 
-    <!-- Hier kommt jetzt die Differenz wieder unten dazu -->
+    <!-- Differenzanzeige unter der Tabelle -->
     <div class="totals" id="differenceDisplay">
         Differenz ↕ - ↔: 0
     </div>
@@ -124,7 +124,6 @@
 
             const scoreBody = document.getElementById('scoreBody');
 
-            // Zeile: Runde X Werte
             const rowRound = document.createElement('tr');
             rowRound.innerHTML = `
                 <td>Runde ${round}</td>
@@ -151,7 +150,6 @@
             totalRight -= lastRound.right;
 
             const scoreBody = document.getElementById('scoreBody');
-            // Letzte Zeile (die Runde) entfernen
             scoreBody.removeChild(scoreBody.lastElementChild);
 
             updateSums();
@@ -170,6 +168,12 @@
             document.getElementById('roundDisplay').innerText = `Runde 1`;
 
             updateSums();
+
+            // LocalStorage löschen
+            localStorage.removeItem('zahlenAppHistory');
+            localStorage.removeItem('zahlenAppTotalLeft');
+            localStorage.removeItem('zahlenAppTotalRight');
+            localStorage.removeItem('zahlenAppRound');
         }
 
         function updateSums() {
@@ -179,7 +183,46 @@
             const difference = totalLeft - totalRight;
             document.getElementById('differenceDisplay').innerText =
                 `Differenz ↕ - ↔: ${difference}`;
+
+            // LocalStorage speichern
+            localStorage.setItem('zahlenAppHistory', JSON.stringify(history));
+            localStorage.setItem('zahlenAppTotalLeft', totalLeft);
+            localStorage.setItem('zahlenAppTotalRight', totalRight);
+            localStorage.setItem('zahlenAppRound', round);
         }
+
+        function restoreFromLocalStorage() {
+            const savedHistory = localStorage.getItem('zahlenAppHistory');
+            const savedLeft = localStorage.getItem('zahlenAppTotalLeft');
+            const savedRight = localStorage.getItem('zahlenAppTotalRight');
+            const savedRound = localStorage.getItem('zahlenAppRound');
+
+            if (savedHistory && savedLeft && savedRight && savedRound) {
+                history = JSON.parse(savedHistory);
+                totalLeft = parseFloat(savedLeft);
+                totalRight = parseFloat(savedRight);
+                round = parseInt(savedRound);
+
+                document.getElementById('roundDisplay').innerText = `Runde ${round}`;
+
+                const scoreBody = document.getElementById('scoreBody');
+                scoreBody.innerHTML = '';
+                history.forEach(entry => {
+                    const rowRound = document.createElement('tr');
+                    rowRound.innerHTML = `
+                        <td>Runde ${entry.round}</td>
+                        <td>${entry.left}</td>
+                        <td>${entry.right}</td>
+                    `;
+                    scoreBody.appendChild(rowRound);
+                });
+
+                updateSums();
+            }
+        }
+
+        // Seite initial laden → restore LocalStorage
+        restoreFromLocalStorage();
     </script>
 
 </body>
