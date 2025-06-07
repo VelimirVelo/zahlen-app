@@ -10,18 +10,21 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 50px;
+            margin-top: 20px;
+            padding: 10px;
         }
         .container {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         input {
             font-size: 20px;
-            width: 100px;
+            width: 120px;
             padding: 10px;
+            text-align: right;
         }
         .round {
             font-size: 24px;
@@ -32,10 +35,12 @@
             padding: 10px 20px;
             font-size: 18px;
             margin: 5px;
+            width: 100%;
+            max-width: 300px;
         }
         .scoreboard {
             margin-top: 20px;
-            width: 80%;
+            width: 100%;
             max-width: 500px;
             border: 1px solid #ccc;
             padding: 10px;
@@ -59,6 +64,45 @@
             font-size: 18px;
             font-weight: bold;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .calculator-display {
+            font-size: 24px;
+            margin-bottom: 10px;
+            width: 100%;
+            text-align: right;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+        .calculator-buttons button {
+            padding: 15px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -66,8 +110,8 @@
     <h1>Zahlen App</h1>
 
     <div class="container">
-        <input type="text" id="leftInput" placeholder="↕">
-        <input type="text" id="rightInput" placeholder="↔">
+        <input type="text" id="leftInput" placeholder="↕" readonly onclick="openCalculator('leftInput')">
+        <input type="text" id="rightInput" placeholder="↔" readonly onclick="openCalculator('rightInput')">
     </div>
 
     <div>
@@ -82,12 +126,11 @@
             <thead>
                 <tr>
                     <th>Runde</th>
-                    <th>↕ </th>
-                    <th>↔ </th>
+                    <th>↕ (Rundenpunkte)</th>
+                    <th>↔ (Rundenpunkte)</th>
                 </tr>
             </thead>
             <tbody id="scoreBody">
-                <!-- Dynamisch gefüllt -->
             </tbody>
             <tfoot>
                 <tr class="sum-row">
@@ -99,14 +142,43 @@
         </table>
     </div>
 
-    <!-- Differenzanzeige unter der Tabelle -->
     <div class="totals" id="differenceDisplay">
         Differenz ↕ - ↔: 0
     </div>
 
-    <!-- Reset Button GANZ UNTEN -->
     <div style="margin-top: 20px;">
         <button onclick="resetGame()">Reset</button>
+    </div>
+
+    <!-- Calculator Modal -->
+    <div class="modal" id="calculatorModal">
+        <div class="modal-content">
+            <div class="calculator-display" id="calculatorDisplay">0</div>
+            <div class="calculator-buttons">
+                <button onclick="appendCalculator('7')">7</button>
+                <button onclick="appendCalculator('8')">8</button>
+                <button onclick="appendCalculator('9')">9</button>
+                <button onclick="appendCalculator('/')">÷</button>
+
+                <button onclick="appendCalculator('4')">4</button>
+                <button onclick="appendCalculator('5')">5</button>
+                <button onclick="appendCalculator('6')">6</button>
+                <button onclick="appendCalculator('*')">×</button>
+
+                <button onclick="appendCalculator('1')">1</button>
+                <button onclick="appendCalculator('2')">2</button>
+                <button onclick="appendCalculator('3')">3</button>
+                <button onclick="appendCalculator('-')">-</button>
+
+                <button onclick="appendCalculator('0')">0</button>
+                <button onclick="appendCalculator('.')">.</button>
+                <button onclick="clearCalculator()">C</button>
+                <button onclick="appendCalculator('+')">+</button>
+
+                <button style="grid-column: span 4;" onclick="calculateResult()">=</button>
+                <button style="grid-column: span 4;" onclick="confirmCalculator()">OK</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -114,6 +186,47 @@
         let totalLeft = 0;
         let totalRight = 0;
         let history = [];
+
+        let currentInputId = '';
+        let calculatorValue = '';
+
+        function openCalculator(inputId) {
+            currentInputId = inputId;
+            calculatorValue = '';
+            document.getElementById('calculatorDisplay').innerText = '0';
+            document.getElementById('calculatorModal').style.display = 'flex';
+        }
+
+        function appendCalculator(char) {
+            calculatorValue += char;
+            document.getElementById('calculatorDisplay').innerText = calculatorValue;
+        }
+
+        function clearCalculator() {
+            calculatorValue = '';
+            document.getElementById('calculatorDisplay').innerText = '0';
+        }
+
+        function calculateResult() {
+            try {
+                const result = eval(calculatorValue || '0');
+                calculatorValue = result.toString();
+                document.getElementById('calculatorDisplay').innerText = calculatorValue;
+            } catch {
+                calculatorValue = '';
+                document.getElementById('calculatorDisplay').innerText = 'ERROR';
+            }
+        }
+
+        function confirmCalculator() {
+            try {
+                const result = eval(calculatorValue || '0');
+                document.getElementById(currentInputId).value = result;
+            } catch {
+                document.getElementById(currentInputId).value = 'ERROR';
+            }
+            document.getElementById('calculatorModal').style.display = 'none';
+        }
 
         function nextRound() {
             const left = document.getElementById('leftInput').value;
@@ -128,7 +241,6 @@
             totalRight += rightResult;
 
             const scoreBody = document.getElementById('scoreBody');
-
             const rowRound = document.createElement('tr');
             rowRound.innerHTML = `
                 <td>Runde ${round}</td>
@@ -165,12 +277,8 @@
 
         function resetGame() {
             const confirmReset = confirm("Willst du wirklich alle Runden zurücksetzen?");
+            if (!confirmReset) return;
 
-            if (!confirmReset) {
-                return; // Abbrechen → nichts tun
-            }
-
-            // Wenn bestätigt → zurücksetzen:
             round = 1;
             totalLeft = 0;
             totalRight = 0;
@@ -181,7 +289,6 @@
 
             updateSums();
 
-            // LocalStorage löschen
             localStorage.removeItem('zahlenAppHistory');
             localStorage.removeItem('zahlenAppTotalLeft');
             localStorage.removeItem('zahlenAppTotalRight');
@@ -193,10 +300,8 @@
             document.getElementById('sumRight').innerText = totalRight;
 
             const difference = totalLeft - totalRight;
-            document.getElementById('differenceDisplay').innerText =
-                `Differenz ↕ - ↔: ${difference}`;
+            document.getElementById('differenceDisplay').innerText = `Differenz ↕ - ↔: ${difference}`;
 
-            // LocalStorage speichern
             localStorage.setItem('zahlenAppHistory', JSON.stringify(history));
             localStorage.setItem('zahlenAppTotalLeft', totalLeft);
             localStorage.setItem('zahlenAppTotalRight', totalRight);
@@ -233,7 +338,6 @@
             }
         }
 
-        // Seite initial laden → restore LocalStorage
         restoreFromLocalStorage();
     </script>
 
