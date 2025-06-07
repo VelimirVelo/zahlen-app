@@ -72,7 +72,6 @@
     <div>
         <button onclick="nextRound()">Bestätigen</button>
         <button onclick="undoRound()">Undo Letzte Runde</button>
-        <button onclick="resetGame()">Reset</button>
     </div>
 
     <div class="round" id="roundDisplay">Runde 1</div>
@@ -102,6 +101,11 @@
     <!-- Differenzanzeige unter der Tabelle -->
     <div class="totals" id="differenceDisplay">
         Differenz ↕ - ↔: 0
+    </div>
+
+    <!-- Reset Button GANZ UNTEN -->
+    <div style="margin-top: 20px;">
+        <button onclick="resetGame()">Reset</button>
     </div>
 
     <script>
@@ -159,6 +163,13 @@
         }
 
         function resetGame() {
+            const confirmReset = confirm("Willst du wirklich alle Runden zurücksetzen?");
+
+            if (!confirmReset) {
+                return; // Abbrechen → nichts tun
+            }
+
+            // Wenn bestätigt → zurücksetzen:
             round = 1;
             totalLeft = 0;
             totalRight = 0;
