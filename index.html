@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Zahlen App</title>
+    <title>Okey Rechner</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -173,7 +173,7 @@
 
                 <button onclick="appendCalculator('0')">0</button>
                 <button onclick="backspaceCalculator()">⌫</button>
-                <button onclick="clearCalculator()">AC</button>
+                <button onclick="clearCalculator()">C</button>
                 <button onclick="appendCalculator('+')">+</button>
 
                 <button style="grid-column: span 4;" onclick="calculateResult()">=</button>
@@ -324,9 +324,6 @@
                 history = JSON.parse(savedHistory);
                 totalLeft = parseFloat(savedLeft);
                 totalRight = parseFloat(savedRight);
-                round = parseInt(savedRound);
-
-                document.getElementById('roundDisplay').innerText = `Runde ${round}`;
 
                 const scoreBody = document.getElementById('scoreBody');
                 scoreBody.innerHTML = '';
@@ -339,6 +336,9 @@
                     `;
                     scoreBody.appendChild(rowRound);
                 });
+
+                round = history.length + 1;
+                document.getElementById('roundDisplay').innerText = `Runde ${round}`;
 
                 updateSums();
             }
