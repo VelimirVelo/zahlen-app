@@ -77,7 +77,14 @@
       width: 100vw;
       height: 100vh;
       background-color: #000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      display: flex;
       flex-direction: column;
+      width: 100vw;
+      height: 100vh;
     }
     .calculator-display {
       font-size: 38px;
@@ -146,11 +153,11 @@
   </style>
 </head>
 <body>
-  <h1>Zahlen App</h1>
+  <h1>Okey Rechner</h1>
 
   <div class="container">
-    <input type="text" id="leftInput" placeholder="↕" readonly onclick="openCalculator('leftInput')" />
-    <input type="text" id="rightInput" placeholder="↔" readonly onclick="openCalculator('rightInput')" />
+    <input type="text" id="leftInput" placeholder=" ↕ " readonly onclick="openCalculator('leftInput')" />
+    <input type="text" id="rightInput" placeholder=" ↔ " readonly onclick="openCalculator('rightInput')" />
   </div>
 
   <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
@@ -165,8 +172,8 @@
       <thead>
         <tr>
           <th>Runde</th>
-          <th>↕ (Rundenpunkte)</th>
-          <th>↔ (Rundenpunkte)</th>
+          <th>↕ </th>
+          <th>↔ </th>
         </tr>
       </thead>
       <tbody id="scoreBody"></tbody>
@@ -187,43 +194,40 @@
   </div>
 
   <div class="modal" id="calculatorModal">
-    <div class="calculator-display" id="calculatorDisplay">0</div>
-    <div class="calculator-buttons">
-      <button class="calculator-function" ontouchstart="clearCalculator(); event.preventDefault();">C</button>
-      <button class="calculator-function" ontouchstart="toggleSign(); event.preventDefault();">±</button>
-      <button class="calculator-function" ontouchstart="backspaceCalculator(); event.preventDefault();">⌫</button>
-      <button class="calculator-operator" ontouchstart="appendCalculator('/'); event.preventDefault();">÷</button>
+    <div class="modal-content"> <!-- WICHTIG! -->
+      <div class="calculator-display" id="calculatorDisplay">0</div>
+      <div class="calculator-buttons">
+        <button class="calculator-function" ontouchstart="clearCalculator(); event.preventDefault();">AC</button>
+        <button class="calculator-function" ontouchstart="toggleSign(); event.preventDefault();">±</button>
+        <button class="calculator-function" ontouchstart="backspaceCalculator(); event.preventDefault();">⌫</button>
+        <button class="calculator-operator" ontouchstart="appendCalculator('/'); event.preventDefault();">÷</button>
 
-      <button class="calculator-number" ontouchstart="appendCalculator('7'); event.preventDefault();">7</button>
-      <button class="calculator-number" ontouchstart="appendCalculator('8'); event.preventDefault();">8</button>
-      <button class="calculator-number" ontouchstart="appendCalculator('9'); event.preventDefault();">9</button>
-      <button class="calculator-operator" ontouchstart="appendCalculator('*'); event.preventDefault();">×</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('7'); event.preventDefault();">7</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('8'); event.preventDefault();">8</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('9'); event.preventDefault();">9</button>
+        <button class="calculator-operator" ontouchstart="appendCalculator('*'); event.preventDefault();">×</button>
 
-      <button class="calculator-number" ontouchstart="appendCalculator('4'); event.preventDefault();">4</button>
-      <button class="calculator-number" ontouchstart="appendCalculator('5'); event.preventDefault();">5</button>
-      <button class="calculator-number" ontouchstart="appendCalculator('6'); event.preventDefault();">6</button>
-      <button class="calculator-operator" ontouchstart="appendCalculator('-'); event.preventDefault();">-</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('4'); event.preventDefault();">4</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('5'); event.preventDefault();">5</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('6'); event.preventDefault();">6</button>
+        <button class="calculator-operator" ontouchstart="appendCalculator('-'); event.preventDefault();">-</button>
 
-      <button class="calculator-number" ontouchstart="appendCalculator('1'); event.preventDefault();">1</button>
-      <button class="calculator-number" ontouchstart="appendCalculator('2'); event.preventDefault();">2</button>
-      <button class="calculator-number" ontouchstart="appendCalculator('3'); event.preventDefault();">3</button>
-      <button class="calculator-operator" ontouchstart="appendCalculator('+'); event.preventDefault();">+</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('1'); event.preventDefault();">1</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('2'); event.preventDefault();">2</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('3'); event.preventDefault();">3</button>
+        <button class="calculator-operator" ontouchstart="appendCalculator('+'); event.preventDefault();">+</button>
 
-      <button class="calculator-number" style="grid-column: span 2;" ontouchstart="appendCalculator('0'); event.preventDefault();">0</button>
-      <button class="calculator-operator" style="grid-column: span 2;" ontouchstart="calculateResult(); event.preventDefault();">=</button>
-    </div>
+        <button class="calculator-number" style="grid-column: span 2;" ontouchstart="appendCalculator('0'); event.preventDefault();">0</button>
+        <button class="calculator-operator" style="grid-column: span 2;" ontouchstart="calculateResult(); event.preventDefault();">=</button>
+      </div>
 
-    <!-- FIX: calculator-footer → OK bleibt sichtbar -->
-    <div class="calculator-footer">
-      <button class="calculator-ok-fullwidth" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
+      <div class="calculator-footer"> <!-- WICHTIG! → Footer bleibt unten -->
+        <button class="calculator-ok-fullwidth" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
+      </div>
     </div>
   </div>
 
-<!-- dein bestehendes JS → bleibt unverändert → das öffnet das Modal korrekt -->
-
-</body>
-</html>
-
+<!-- Dein bestehendes JS → bleibt unverändert → funktioniert weiter -->
 
 	  <script>
     let round = 1;
