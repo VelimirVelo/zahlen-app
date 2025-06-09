@@ -103,9 +103,21 @@
             width: 100%;
         }
         .calculator-buttons button {
-            padding: 15px;
-            font-size: 20px;
-            touch-action: manipulation; /* Prevent double tap zoom */
+    	    padding: 20px 0;
+    	    font-size: 24px;
+    	    touch-action: manipulation;
+   	    background-color: #f0f0f0;
+	    border: 1px solid #ccc;
+	    border-radius: 12px;
+	    transition: background-color 0.1s ease, transform 0.05s ease;
+	    -webkit-tap-highlight-color: transparent; /* Safari fix */
+}
+
+	.calculator-buttons button:active {
+	    background-color: #ddd;
+	    transform: scale(0.97); /* kleineres Scale beim Klick */
+}
+
         }
     </style>
 </head>
