@@ -78,7 +78,6 @@
       height: 100vh;
       background-color: #000;
       flex-direction: column;
-      justify-content: space-between;
     }
     .calculator-display {
       font-size: 38px;
@@ -120,6 +119,9 @@
     button.calculator-function {
       background-color: #666;
       color: #fff;
+    }
+    .calculator-footer {
+      width: 100%;
     }
     button.calculator-ok-fullwidth {
       background-color: #28a745;
@@ -210,10 +212,18 @@
       <button class="calculator-number" style="grid-column: span 2;" ontouchstart="appendCalculator('0'); event.preventDefault();">0</button>
       <button class="calculator-operator" style="grid-column: span 2;" ontouchstart="calculateResult(); event.preventDefault();">=</button>
     </div>
-    <button class="calculator-ok-fullwidth" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
+
+    <!-- FIX: calculator-footer → OK bleibt sichtbar -->
+    <div class="calculator-footer">
+      <button class="calculator-ok-fullwidth" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
+    </div>
   </div>
 
-<!-- dein script bleibt → einfach so lassen wie gehabt -->
+<!-- dein bestehendes JS → bleibt unverändert → das öffnet das Modal korrekt -->
+
+</body>
+</html>
+
 
 	  <script>
     let round = 1;
