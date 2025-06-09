@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Zahlen App</title>
+  <title>Okey Rechner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <style>
     body {
@@ -34,6 +34,7 @@
     button {
       padding: 10px 20px;
       font-size: 18px;
+      font-weight: bold;
       margin: 5px;
       width: 100%;
       max-width: 300px;
@@ -79,7 +80,7 @@
       justify-content: center;
     }
     .modal-content {
-      background-color: white;
+      background-color: #000;
       padding: 20px;
       border-radius: 10px;
       width: 320px;
@@ -88,41 +89,71 @@
       align-items: center;
     }
     .calculator-display {
-      font-size: 24px;
+      font-size: 58px;
+      font-weight: bold;
       margin-bottom: 10px;
       width: 100%;
       text-align: right;
       padding: 10px;
-      border: 1px solid #ccc;
+      border: none;
+      background-color: #111;
+      color: #fff;
     }
     .calculator-buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 12px;
       width: 100%;
     }
     .calculator-buttons button {
-      padding: 20px 0;
-      font-size: 24px;
-      touch-action: manipulation;
-      background-color: #f0f0f0;
-      border: 1px solid #ccc;
+      padding: 26px 0;
+      font-size: 30px;
+      font-weight: bold;
+      border: none;
       border-radius: 12px;
       transition: background-color 0.1s ease, transform 0.05s ease;
       -webkit-tap-highlight-color: transparent;
     }
+    button.calculator-number {
+      background-color: #333;
+      color: #fff;
+    }
+    button.calculator-operator {
+      background-color: orange;
+      color: #fff;
+    }
+    button.calculator-function {
+      background-color: #666;
+      color: #fff;
+    }
+    button.calculator-ok-fullwidth {
+      background-color: #28a745;
+      color: #fff;
+      font-size: 30px;
+      font-weight: bold;
+      padding: 26px 0;
+      width: 100%;
+      margin-top: 12px;
+      border: 1px solid #28a745;
+      border-radius: 12px;
+      transition: background-color 0.1s ease, transform 0.05s ease;
+    }
+    button.calculator-ok-fullwidth:active {
+      background-color: #218838;
+      transform: scale(0.97);
+    }
     .calculator-buttons button:active {
-      background-color: #ddd;
+      background-color: #999;
       transform: scale(0.97);
     }
   </style>
 </head>
 <body>
-  <h1>Zahlen App</h1>
+  <h1>Okey Rechner</h1>
 
   <div class="container">
-    <input type="text" id="leftInput" placeholder="↕" readonly onclick="openCalculator('leftInput')" />
-    <input type="text" id="rightInput" placeholder="↔" readonly onclick="openCalculator('rightInput')" />
+    <input type="text" id="leftInput" placeholder=" ↕ " readonly onclick="openCalculator('leftInput')" />
+    <input type="text" id="rightInput" placeholder=" ↔ " readonly onclick="openCalculator('rightInput')" />
   </div>
 
   <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
@@ -137,8 +168,8 @@
       <thead>
         <tr>
           <th>Runde</th>
-          <th>↕ (Rundenpunkte)</th>
-          <th>↔ (Rundenpunkte)</th>
+          <th>↕ </th>
+          <th>↔ </th>
         </tr>
       </thead>
       <tbody id="scoreBody"></tbody>
@@ -162,33 +193,36 @@
     <div class="modal-content">
       <div class="calculator-display" id="calculatorDisplay">0</div>
       <div class="calculator-buttons">
-        <button ontouchstart="appendCalculator('7'); event.preventDefault();">7</button>
-        <button ontouchstart="appendCalculator('8'); event.preventDefault();">8</button>
-        <button ontouchstart="appendCalculator('9'); event.preventDefault();">9</button>
-        <button ontouchstart="appendCalculator('/'); event.preventDefault();">÷</button>
+        <button class="calculator-function" ontouchstart="clearCalculator(); event.preventDefault();">C</button>
+        <button class="calculator-function" ontouchstart="toggleSign(); event.preventDefault();">±</button>
+        <button class="calculator-function" ontouchstart="backspaceCalculator(); event.preventDefault();">⌫</button>
+        <button class="calculator-operator" ontouchstart="appendCalculator('/'); event.preventDefault();">÷</button>
 
-        <button ontouchstart="appendCalculator('4'); event.preventDefault();">4</button>
-        <button ontouchstart="appendCalculator('5'); event.preventDefault();">5</button>
-        <button ontouchstart="appendCalculator('6'); event.preventDefault();">6</button>
-        <button ontouchstart="appendCalculator('*'); event.preventDefault();">×</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('7'); event.preventDefault();">7</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('8'); event.preventDefault();">8</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('9'); event.preventDefault();">9</button>
+        <button class="calculator-operator" ontouchstart="appendCalculator('*'); event.preventDefault();">×</button>
 
-        <button ontouchstart="appendCalculator('1'); event.preventDefault();">1</button>
-        <button ontouchstart="appendCalculator('2'); event.preventDefault();">2</button>
-        <button ontouchstart="appendCalculator('3'); event.preventDefault();">3</button>
-        <button ontouchstart="appendCalculator('-'); event.preventDefault();">-</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('4'); event.preventDefault();">4</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('5'); event.preventDefault();">5</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('6'); event.preventDefault();">6</button>
+        <button class="calculator-operator" ontouchstart="appendCalculator('-'); event.preventDefault();">-</button>
 
-        <button ontouchstart="appendCalculator('0'); event.preventDefault();">0</button>
-        <button ontouchstart="backspaceCalculator(); event.preventDefault();">⌫</button>
-        <button ontouchstart="clearCalculator(); event.preventDefault();">C</button>
-        <button ontouchstart="appendCalculator('+'); event.preventDefault();">+</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('1'); event.preventDefault();">1</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('2'); event.preventDefault();">2</button>
+        <button class="calculator-number" ontouchstart="appendCalculator('3'); event.preventDefault();">3</button>
+        <button class="calculator-operator" ontouchstart="appendCalculator('+'); event.preventDefault();">+</button>
 
-        <button style="grid-column: span 4;" ontouchstart="calculateResult(); event.preventDefault();">=</button>
-        <button style="grid-column: span 4;" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
+        <button class="calculator-number" style="grid-column: span 2;" ontouchstart="appendCalculator('0'); event.preventDefault();">0</button>
+        <button class="calculator-operator" style="grid-column: span 2;" ontouchstart="calculateResult(); event.preventDefault();">=</button>
       </div>
+
+      <!-- OK Button FULLWIDTH -->
+      <button class="calculator-ok-fullwidth" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
     </div>
   </div>
 
-  <script>
+	  <script>
     let round = 1;
     let totalLeft = 0;
     let totalRight = 0;
@@ -217,6 +251,15 @@
     function backspaceCalculator() {
       calculatorValue = calculatorValue.slice(0, -1);
       document.getElementById('calculatorDisplay').innerText = calculatorValue || '0';
+    }
+
+    function toggleSign() {
+      if (calculatorValue.startsWith('-')) {
+        calculatorValue = calculatorValue.substring(1);
+      } else {
+        calculatorValue = '-' + calculatorValue;
+      }
+      document.getElementById('calculatorDisplay').innerText = calculatorValue;
     }
 
     function calculateResult() {
@@ -312,7 +355,7 @@
       document.getElementById('sumRight').innerText = totalRight;
 
       const difference = totalLeft - totalRight;
-      document.getElementById('differenceDisplay').innerText = `Differenz ↕ - ↔: ${difference}`;
+      document.getElementById('differenceDisplay').innerText = `Differenz: ${difference}`;
 
       localStorage.setItem('zahlenAppHistory', JSON.stringify(history));
       localStorage.setItem('zahlenAppTotalLeft', totalLeft);
