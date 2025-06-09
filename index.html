@@ -1,3 +1,5 @@
+<!-- HIER BEGINNT DER CODE -->
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -39,7 +41,7 @@
       width: 100%;
       max-width: 300px;
       touch-action: manipulation;
-      border: none;
+      border: none; /* Kein weißer Rand */
     }
     .scoreboard {
       margin-top: 20px;
@@ -74,35 +76,38 @@
       z-index: 999;
       left: 0;
       top: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #000;
-    }
-    .modal-content {
-      display: flex;
-      flex-direction: column;
       width: 100%;
       height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background-color: #000;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90vw;          /* responsive */
+      max-width: 320px;     /* max 320px */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .calculator-display {
-      font-size: 38px;
+      font-size: 38px;      /* größer */
       font-weight: bold;
+      margin-bottom: 10px;
       width: 100%;
       text-align: right;
-      padding: 20px;
+      padding: 10px;
       background-color: #111;
       color: #fff;
-      border: none;
-      box-sizing: border-box;
+      border: none;         /* kein Rand */
     }
     .calculator-buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
-      padding: 20px;
-      flex-grow: 1;
       width: 100%;
-      box-sizing: border-box;
     }
     .calculator-buttons button {
       padding: 26px 0;
@@ -111,7 +116,6 @@
       border-radius: 12px;
       transition: background-color 0.1s ease, transform 0.05s ease;
       -webkit-tap-highlight-color: transparent;
-      border: none;
     }
     button.calculator-number {
       background-color: #333;
@@ -132,10 +136,8 @@
       font-weight: bold;
       padding: 26px 0;
       width: 100%;
-      margin: 0;
-      border: none;
+      margin-top: 12px;
       border-radius: 12px;
-      grid-column: span 4; /* WICHTIG → damit im Grid → 100 % */
       transition: background-color 0.1s ease, transform 0.05s ease;
     }
     button.calculator-ok-fullwidth:active {
@@ -215,12 +217,20 @@
 
         <button class="calculator-number" style="grid-column: span 2;" ontouchstart="appendCalculator('0'); event.preventDefault();">0</button>
         <button class="calculator-operator" style="grid-column: span 2;" ontouchstart="calculateResult(); event.preventDefault();">=</button>
-
-        <!-- OK Button → als Teil vom Grid → 100 % sichtbar -->
-        <button class="calculator-ok-fullwidth" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
       </div>
+
+      <!-- OK Button FULLWIDTH -->
+      <button class="calculator-ok-fullwidth" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
     </div>
   </div>
+
+  <!-- Dein JS bleibt wie in der letzten Version → openCalculator() usw. → einfach Script dran lassen -->
+
+</body>
+</html>
+
+<!-- HIER ENDET DER CODE -->
+
 
 
 <!-- Dein bestehendes JS → bleibt unverändert → funktioniert weiter -->
