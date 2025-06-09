@@ -93,9 +93,9 @@
       align-items: center;
     }
     .calculator-display {
-      font-size: 38px;      /* größer */
+      font-size: 30px;      /* größer */
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       width: 100%;
       text-align: right;
       padding: 10px;
@@ -106,14 +106,14 @@
     .calculator-buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 6px;
       width: 100%;
     }
     .calculator-buttons button {
-      padding: 26px 0;
-      font-size: 30px;
+      padding: 13px 0;
+      font-size: 20px;
       font-weight: bold;
-      border-radius: 12px;
+      border-radius: 36px;
       transition: background-color 0.1s ease, transform 0.05s ease;
       -webkit-tap-highlight-color: transparent;
     }
@@ -132,12 +132,12 @@
     button.calculator-ok-fullwidth {
       background-color: #28a745;
       color: #fff;
-      font-size: 30px;
+      font-size: 20px;
       font-weight: bold;
-      padding: 26px 0;
+      padding: 13px 0;
       width: 100%;
       margin-top: 12px;
-      border-radius: 12px;
+      border-radius: 36px;
       transition: background-color 0.1s ease, transform 0.05s ease;
     }
     button.calculator-ok-fullwidth:active {
@@ -151,11 +151,11 @@
   </style>
 </head>
 <body>
-  <h1>Zahlen App</h1>
+  <h1>Okey Rechner</h1>
 
   <div class="container">
-    <input type="text" id="leftInput" placeholder="↕" readonly onclick="openCalculator('leftInput')" />
-    <input type="text" id="rightInput" placeholder="↔" readonly onclick="openCalculator('rightInput')" />
+    <input type="text" id="leftInput" placeholder=" ↕ " readonly onclick="openCalculator('leftInput')" />
+    <input type="text" id="rightInput" placeholder=" ↔ " readonly onclick="openCalculator('rightInput')" />
   </div>
 
   <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
@@ -170,8 +170,8 @@
       <thead>
         <tr>
           <th>Runde</th>
-          <th>↕ (Rundenpunkte)</th>
-          <th>↔ (Rundenpunkte)</th>
+          <th>↕ </th>
+          <th>↔ </th>
         </tr>
       </thead>
       <tbody id="scoreBody"></tbody>
@@ -195,7 +195,7 @@
     <div class="modal-content">
       <div class="calculator-display" id="calculatorDisplay">0</div>
       <div class="calculator-buttons">
-        <button class="calculator-function" ontouchstart="clearCalculator(); event.preventDefault();">C</button>
+        <button class="calculator-function" ontouchstart="clearCalculator(); event.preventDefault();">AC</button>
         <button class="calculator-function" ontouchstart="toggleSign(); event.preventDefault();">±</button>
         <button class="calculator-function" ontouchstart="backspaceCalculator(); event.preventDefault();">⌫</button>
         <button class="calculator-operator" ontouchstart="appendCalculator('/'); event.preventDefault();">÷</button>
