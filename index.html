@@ -1,8 +1,10 @@
+<!-- HIER BEGINNT DER CODE -->
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Okey Rechner</title>
+  <title>Zahlen App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <style>
     body {
@@ -39,6 +41,7 @@
       width: 100%;
       max-width: 300px;
       touch-action: manipulation;
+      border: none; /* Kein weißer Rand */
     }
     .scoreboard {
       margin-top: 20px;
@@ -83,21 +86,22 @@
       background-color: #000;
       padding: 20px;
       border-radius: 10px;
-      width: 320px;
+      width: 90vw;          /* responsive */
+      max-width: 320px;     /* max 320px */
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .calculator-display {
-      font-size: 58px;
+      font-size: 38px;      /* größer */
       font-weight: bold;
       margin-bottom: 10px;
       width: 100%;
       text-align: right;
       padding: 10px;
-      border: none;
       background-color: #111;
       color: #fff;
+      border: none;         /* kein Rand */
     }
     .calculator-buttons {
       display: grid;
@@ -109,7 +113,6 @@
       padding: 26px 0;
       font-size: 30px;
       font-weight: bold;
-      border: none;
       border-radius: 12px;
       transition: background-color 0.1s ease, transform 0.05s ease;
       -webkit-tap-highlight-color: transparent;
@@ -134,7 +137,6 @@
       padding: 26px 0;
       width: 100%;
       margin-top: 12px;
-      border: 1px solid #28a745;
       border-radius: 12px;
       transition: background-color 0.1s ease, transform 0.05s ease;
     }
@@ -149,11 +151,11 @@
   </style>
 </head>
 <body>
-  <h1>Okey Rechner</h1>
+  <h1>Zahlen App</h1>
 
   <div class="container">
-    <input type="text" id="leftInput" placeholder=" ↕ " readonly onclick="openCalculator('leftInput')" />
-    <input type="text" id="rightInput" placeholder=" ↔ " readonly onclick="openCalculator('rightInput')" />
+    <input type="text" id="leftInput" placeholder="↕" readonly onclick="openCalculator('leftInput')" />
+    <input type="text" id="rightInput" placeholder="↔" readonly onclick="openCalculator('rightInput')" />
   </div>
 
   <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
@@ -168,8 +170,8 @@
       <thead>
         <tr>
           <th>Runde</th>
-          <th>↕ </th>
-          <th>↔ </th>
+          <th>↕ (Rundenpunkte)</th>
+          <th>↔ (Rundenpunkte)</th>
         </tr>
       </thead>
       <tbody id="scoreBody"></tbody>
@@ -221,6 +223,7 @@
       <button class="calculator-ok-fullwidth" ontouchstart="confirmCalculator(); event.preventDefault();">OK</button>
     </div>
   </div>
+
 
 	  <script>
     let round = 1;
